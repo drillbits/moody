@@ -8,14 +8,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"time"
-
-	"google.golang.org/api/iterator"
-
 	"strings"
+	"time"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/drillbits/moody"
+	"google.golang.org/api/iterator"
 )
 
 // Exit codes are int values that represent an exit code for a particular error.
@@ -30,6 +28,8 @@ type CLI struct {
 	// to write message from the CLI.
 	outStream, errStream io.Writer
 }
+
+const subName = "/cloud-app"
 
 // Run invokes the CLI with the given arguments.
 func (cli *CLI) Run(args []string) int {
@@ -78,7 +78,7 @@ func (cli *CLI) Run(args []string) int {
 			fmt.Fprintf(cli.errStream, "Error: %s\n", err)
 			return ExitCodeError
 		}
-		_, err = moody.CreateSubscriptionIfNotExists(ctx, c, rawid, topic, 10*time.Second, nil)
+		_, err = moody.CreateSubscriptionIfNotExists(ctx, c, rawid+subName, topic, 10*time.Second, nil)
 		if err != nil {
 			fmt.Fprintf(cli.errStream, "Error: %s\n", err)
 			return ExitCodeError
@@ -109,7 +109,7 @@ func (cli *CLI) Run(args []string) int {
 
 	// subscribe
 	for _, rawid := range moody.TestTopics {
-		id := url.QueryEscape(rawid)
+		id := url.QueryEscape(rawid + subName)
 		sub := c.Subscription(id)
 		go func(ctx context.Context, sub *pubsub.Subscription) {
 			it, err := sub.Pull(ctx)

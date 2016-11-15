@@ -8,10 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"google.golang.org/api/iterator"
-
 	"cloud.google.com/go/pubsub"
 	"github.com/garyburd/redigo/redis"
+	"google.golang.org/api/iterator"
 )
 
 // RedisBroker is a broker using redis.
@@ -72,7 +71,7 @@ func (b *RedisBroker) InitializeTopics(ctx context.Context, topics []string) (ma
 		}
 		t.cloudTopic = topic
 
-		sub, err := CreateSubscriptionIfNotExists(ctx, cc, rawid, topic, 10*time.Second, nil)
+		sub, err := CreateSubscriptionIfNotExists(ctx, cc, rawid+"/moody", topic, 10*time.Second, nil)
 		if err != nil {
 			return nil, err
 		}
