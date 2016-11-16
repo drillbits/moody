@@ -13,6 +13,7 @@ var cfgKey private
 
 // Config is a configuration for Nejireco Pub/Sub.
 type Config struct {
+	Topics   []string   `toml:"topics"`
 	RedisURI string     `toml:"redis_uri"`
 	GCP      *GCPConfig `toml:"gcp"`
 }

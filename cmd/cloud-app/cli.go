@@ -72,7 +72,7 @@ func (cli *CLI) Run(args []string) int {
 		return ExitCodeError
 	}
 
-	for _, rawid := range moody.TestTopics {
+	for _, rawid := range cfg.Topics {
 		topic, err := moody.CreateTopicIfNotExists(ctx, c, rawid)
 		if err != nil {
 			fmt.Fprintf(cli.errStream, "Error: %s\n", err)
@@ -108,7 +108,7 @@ func (cli *CLI) Run(args []string) int {
 	})
 
 	// subscribe
-	for _, rawid := range moody.TestTopics {
+	for _, rawid := range cfg.Topics {
 		id := url.QueryEscape(rawid + subName)
 		sub := c.Subscription(id)
 		go func(ctx context.Context, sub *pubsub.Subscription) {

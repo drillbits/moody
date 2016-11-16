@@ -91,7 +91,7 @@ func (cli *CLI) Run(args []string) int {
 		return ExitCodeError
 	}
 	psc := redis.PubSubConn{Conn: c2}
-	for _, rawid := range moody.TestTopics {
+	for _, rawid := range cfg.Topics {
 		err := psc.Subscribe(rawid)
 		if err != nil {
 			fmt.Fprintf(cli.errStream, "Error: %s\n", err)

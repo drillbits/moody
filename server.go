@@ -17,7 +17,7 @@ func Serve(ctx context.Context) {
 	}
 	defer broker.Close()
 
-	_, err = broker.InitializeTopics(ctx, TestTopics)
+	_, err = broker.InitializeTopics(ctx, cfg.Topics)
 	if err != nil {
 		log.Fatal(err)
 	}
